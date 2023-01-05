@@ -23,14 +23,14 @@ struct SharedState {
 }
 
 impl Future for TimerFuture {
-    type Output = ();
+    type Output = u32;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         // Look at the shared state to see if the timer has already completed.
         let mut shared_state = self.shared_state.lock().unwrap();
 
         if shared_state.completed {
-            Poll::Ready(())
+            Poll::Ready(10)
         } else {
             // Set waker so that the thread can wake up the current task
             // when the timer has completed, ensuring that the future is polled
